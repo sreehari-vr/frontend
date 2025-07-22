@@ -1,20 +1,24 @@
 import React from 'react';
-import Login from './Login'
-import Body from './Body';
-import SignUp from './SignUp';
+import Login from './components/Login'
+import Body from './components/Body';
+import SignUp from './components/SignUp';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {Provider} from 'react-redux'
+import appStore from './utils/appStore';
 
 function App() {
   return (
     <div>
-      <BrowserRouter>
+      <Provider store={appStore}>
+        <BrowserRouter>
         <Routes>
           <Route path='/' element={<Body/>}>
             <Route path='/login' element={<Login/>}></Route>
             <Route path='/signUp' element={<SignUp/>}></Route>
           </Route>
         </Routes>
-      </BrowserRouter>
+        </BrowserRouter>
+      </Provider>
     </div>
   );
 }
