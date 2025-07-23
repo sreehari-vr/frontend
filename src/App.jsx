@@ -8,6 +8,7 @@ import appStore from "./utils/appStore";
 import Feed from "./components/Feed";
 import Profile from "./components/Profile";
 import ProtectedRoute from "./components/ProtectedRoutes";
+import Connections from "./components/Connections";
 
 function App() {
   return (
@@ -31,6 +32,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="connections"
+                element={
+                  <ProtectedRoute>
+                    <Connections />
                   </ProtectedRoute>
                 }
               />
