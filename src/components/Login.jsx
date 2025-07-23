@@ -11,15 +11,16 @@ const Login = () => {
   const [password, setPassword] = useState('Pooja@123')
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [error,setError] = useState('')
   
     async function loginFunction(){
       try {
         const data = await axios.post(BASE_URL+'/login', {email, password}, {withCredentials: true})
         console.log(data.data)
         dispatch(addUser(data.data))
-        navigate('/')
+        navigate('/feed')
       } catch (error) {
-        console.log(error.message)
+        setError(error.response.data.message)
       }
     } 
     
@@ -54,6 +55,7 @@ const Login = () => {
                 placeholder="Type here"
               />
             </fieldset>
+            <p className="text-red-500 text-center">{error}</p>
           </div>
           <div className="card-actions justify-center mt-4">
             <button className="btn btn-primary" onClick={loginFunction}>Log In</button>
