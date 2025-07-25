@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import axios from 'axios'
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
 
-  const [email, setEmail] = useState('pooja@gmail.com')
-  const [password, setPassword] = useState('Pooja@123')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [error,setError] = useState('')
@@ -59,7 +59,13 @@ const Login = () => {
           </div>
           <div className="card-actions justify-center mt-4">
             <button className="btn btn-primary" onClick={loginFunction}>Log In</button>
+            
           </div>
+                    <div className="card-actions justify-center mt-1">
+                      <Link to="/signUp">
+            <p><u>Sign Up</u></p>
+            </Link>
+                      </div>
         </div>
       </div>
     </div>

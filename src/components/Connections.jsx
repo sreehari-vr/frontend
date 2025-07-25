@@ -23,6 +23,11 @@ const Connections = () => {
     showConnections();
   }, []);
 
+  if(!connections)return
+
+  if (connections.data.length === 0)
+    return <h1 className="flex justify-center my-10"> No Connections Found</h1>;
+
   return (
     <div className="p-6 space-y-6">
       {connections?.data.map((x) => (

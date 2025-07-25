@@ -6,29 +6,35 @@ import { addFeed } from "../utils/feedSlice";
 import FeedCard from "./FeedCard";
 
 const Feed = () => {
+  const feed = useSelector((store) => store.feed);
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
-    const feedLoad = async () => {
-        try {
-            const data = await axios.get(BASE_URL+'/feed',{withCredentials:true})
-            console.log(data)
-            dispatch(addFeed(data?.data.data[0]))
-        } catch (error) {
-            console.log(error.message)
-        }
+  const feedLoad = async () => {
+    try {
+      if (feed) return;
+      const data = await axios.get(BASE_URL + "/feed", {
+        withCredentials: true,
+      });
+      dispatch(addFeed(data?.data?.data));
+    } catch (error) {
+      console.log(error.message);
     }
+  };
 
-    useEffect(()=>{
-        feedLoad()    
-    },[])
-    
-    const user = useSelector((store)=>store.feed)
+  useEffect(() => {
+    feedLoad();
+  }, []);
 
-  return (
-    <div>
-        <FeedCard user={user}/>
-    </div>
-  );
-};
+  if (!feed) return;
+  if (feed.length <= 0) {
+    return <h1 className="flex justify-center my-10">No new users founds!</h1>;
+  }
+return (
+    feed && (
+      <div className="flex justify-center my-10">
+        <FeedCard user={feed[0]} />
+      </div>
+    )
+  );};
 
 export default Feed;

@@ -1,7 +1,28 @@
+import axios from "axios";
 import React from "react";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { removeFeed } from "../utils/feedSlice";
 
 
 const FeedCard = ({user}) => {
+  const dispatch = useDispatch()
+  async function handleCollaborate(id){
+    try {
+      const data = await axios.post(`${BASE_URL}/request/interested/${id}`,{},{withCredentials:true})
+      dispatch(removeFeed(id))
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+  async function handlePass(id){
+    try {
+      const data = await axios.post(`${BASE_URL}/request/ignored/${id}`,{},{withCredentials:true})
+      dispatch(removeFeed(id))
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
   return (
     <div>
       <div className="flex justify-center p-4">
@@ -28,10 +49,10 @@ const FeedCard = ({user}) => {
               <strong>Skills:</strong> {user?.skills}
             </p>
             <div className="card-actions justify-between pt-4">
-              <button className="btn btn-outline bg-green-600 w-[48%]">
+              <button className="btn btn-outline bg-green-600 w-[48%]" onClick={()=>{handleCollaborate(user?._id)}}>
                 Collaborate
               </button>
-              <button className="btn btn-outline bg-red-800 w-[48%]">
+              <button className="btn btn-outline bg-red-800 w-[48%]" onClick={()=>{handlePass(user?._id)}}>
                 Pass
               </button>
             </div>

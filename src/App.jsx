@@ -9,6 +9,7 @@ import Feed from "./components/Feed";
 import Profile from "./components/Profile";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import Connections from "./components/Connections";
+import Requests from "./components/requests";
 
 function App() {
   return (
@@ -40,6 +41,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Connections />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="requests"
+                element={
+                  <ProtectedRoute>
+                    <Requests />
                   </ProtectedRoute>
                 }
               />

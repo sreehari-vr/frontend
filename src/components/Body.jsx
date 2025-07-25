@@ -1,48 +1,56 @@
-import React, { useEffect } from 'react'
-import Navbar from './Navbar'
-import Footer from './Footer'
-import { Outlet, useNavigate } from 'react-router-dom'
-import {BASE_URL} from '../utils/constants'
-import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
-import { addUser } from '../utils/userSlice'
-
+import React, { useEffect } from "react";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import { Outlet, useNavigate } from "react-router-dom";
+import { BASE_URL } from "../utils/constants";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Body = () => {
+  const user = useSelector((store) => store.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = React.useState(true);
 
-  const user = useSelector((store)=>store.user)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
   const userFetch = async () => {
     try {
-      const data = await axios.get(BASE_URL + '/profile/view',{withCredentials:true})
-      if(data && !user){
-        dispatch(addUser(data.data))
-      }else{
-        navigate("/login")
+      if (user) {
+        setLoading(false);
+        return;
       }
-    } catch (error) {
-      navigate('/login')
-      console.error(error.message)
-    }
-  }
 
-  useEffect(()=>{
-    userFetch()
-  },[])
+      const response = await axios.get(BASE_URL + "/profile/view", {
+        withCredentials: true,
+      });
+
+      dispatch(addUser(response.data));
+    } catch (error) {
+      if (error?.response?.status === 401) {
+        navigate("/login");
+      }
+      console.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    userFetch();
+  }, []);
+
+  if (loading) return null; // or <LoadingSpinner />
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar loading={loading} />
 
-      {/* Main content area */}
       <main className="flex-grow">
         <Outlet />
       </main>
-
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Body
+export default Body;
